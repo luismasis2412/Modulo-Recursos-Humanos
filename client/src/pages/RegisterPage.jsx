@@ -21,19 +21,33 @@ function RegisterPage() {
     return(
         <div className="bg-zinc-800 max-w-md p-10 rounded-md">
             {
-                failures.map((error,i) => (
+                failures.map((error , i) => (
                     <div className="bg-red-500 p-2 text-white" key={i}> 
                         {error}
                     </div>
                 ))
             }
             <form onSubmit={onSubmit}>
-                <input type="text" {...register("username", {required: true})}
+                <input type="text" {...register("name", {required: true})}
                 className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
-                placeholder="Username"
+                placeholder="Nombre"
                 />
-                {errors.username && (
-                    <p className="text-red-500"> Se requiere ingresar usuario</p>
+                {errors.name && (
+                    <p className="text-red-500"> Se requiere ingresar Nombre</p>
+                 )}
+                <input type="text" {...register("lastname", {required: true})}
+                className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
+                placeholder="Apellidos"
+                />
+                {errors.lastname && (
+                    <p className="text-red-500"> Se requiere ingresar Apellidos</p>
+                 )}
+                <input type="text" {...register("title", {required: true})}
+                className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
+                placeholder="Profesión"
+                />
+                {errors.title && (
+                    <p className="text-red-500"> Se requiere ingresar Profesión</p>
                  )}
 
                 <input type="email" {...register("email", {required: true})}
@@ -41,7 +55,7 @@ function RegisterPage() {
                 placeholder="Email"
                 />
                 {errors.email && (
-                    <p className="text-red-500"> Se requiere ingresar email </p>
+                    <p className="text-red-500"> Se requiere ingresar Email </p>
                  )}
 
                 <input type="password" {...register("password", {required: true})}
@@ -49,7 +63,7 @@ function RegisterPage() {
                 placeholder="Contraseña"
                 />
                 {errors.password && (
-                    <p className="text-red-500"> Se requiere ingresar contraseña </p>
+                    <p className="text-red-500"> Se requiere ingresar Contraseña </p>
                  )}
                 <p className='flex justify-center'>
                 <button type="submit">

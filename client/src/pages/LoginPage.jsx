@@ -1,11 +1,16 @@
+import { useEffect } from 'react';
 import {useForm} from 'react-hook-form'
-import { useAuth } from '../context/AuthContext';
-import {Link} from 'react-router-dom'
+import { useAuth } from '../context/AuthContext.jsx';
+import {Link, Navigate, useNavigate} from 'react-router-dom'
 
 function LoginPage() {
-
     const {register, handleSubmit, formState: {errors},} = useForm();
-    const {signin, failures: signinFailures} = useAuth();
+    const {signin, isAuthenticated, failures: signinFailures} = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(isAuthenticated) navigate("/homepage");
+    }, [isAuthenticated]);
 
     const onSubmit = handleSubmit(async (data) => {
         signin(data);
@@ -46,7 +51,7 @@ function LoginPage() {
                     </p>
                 </form>
                 <p className='flex justify-evenly '>
-                        <Link to = "/" className='text-sky-500'>
+                        <Link to = "/restore-password" className='text-sky-500'>
                             Olvidó su contraseña?
                         </Link>
                         <Link to = "/register" className= "text-sky-500">
