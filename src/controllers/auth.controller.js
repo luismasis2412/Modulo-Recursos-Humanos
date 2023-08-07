@@ -6,16 +6,17 @@ import { TOKEN_SECRET } from "../config.js"
 
 export const register = async (req, res) => {
     try {
-        const {name, lastname, title, email, password}= req.body
+        const {name, lastname, title, email, password, role}= req.body
         const userFound = await User.findOne({email})
-        if(userFound) return res.status(400).json(["The email already in use"]);
+        if(userFound) return res.status(400).json(["El email se encuentra en uso"]);
         const passwordHash = await bcrypt.hash(password, 10) //sjjfgsnga
         const newUser = new User({
             name, 
             lastname,
             title,
             email,  
-            password : passwordHash
+            password : passwordHash,
+            role,
         })
         console.log(newUser)
     
@@ -28,6 +29,7 @@ export const register = async (req, res) => {
             title: userSaved.title,
             name: userSaved.name,
             lastname: userSaved.lastname,
+            role: userSaved.role,
             createdAt: userSaved.createdAt,
             updatedAt: userSaved.updatedAt,
         })
@@ -43,18 +45,21 @@ export const login = async (req, res) => {
 
         const userFound = await User.findOne({email});
 
-        if (!userFound) return res.status(400).json({ message: "Usuario no registrado"});
+        if (!userFound) return res.status(400).json([ "Usuario no registrado"]);
 
         const isMatch = await bcrypt.compare(password, userFound.password); //True or False
 
-        if (!isMatch) return res.status(400).json({ message: "Contraseña incorrecta"});
+        if (!isMatch) return res.status(400).json(["Contraseña incorrecta"]);
     
         const token = await createAccessToken({id: userFound._id});
         res.cookie('token', token)
         res.json({
             id: userFound._id,
-            email : userFound.email,
-            username: userFound.username,
+            name : userFound.name,
+            lastname: userFound.lastname,
+            title: userFound.title,
+            email: userFound.email,
+            role: userFound.role,
             createdAt: userFound.createdAt,
             updatedAt: userFound.updatedAt,
         })
@@ -73,13 +78,15 @@ export const logout = (req, res) => {
 export const profile = async (req, res) => {
     const userFound = await User.findById(req.user.id);
 
-    if (!userFound) return res.status(400).json({ message: "User not found"});
+    if (!userFound) return res.status(400).json({ message: "No se encuentra usuario"});
 
     return res.json({
         id: userFound._id,
-        username: userFound.username,
+        name: userFound.name,
+        lastname: userFound.lastname,
+        title: userFound.title,
         email: userFound.email,
-        //TODO: ADD MISSING FIELDS
+        role: userFound.role,
         createdAt : userFound.createdAt,
         updatedAt : userFound.updatedAt,
     })
@@ -103,6 +110,7 @@ export const verifyToken = async (req, res) => {
             lastname: userFound.lastname,
             title: userFound.title,
             email: userFound.email,
+            role: userFound.role,
         })
     })
 
