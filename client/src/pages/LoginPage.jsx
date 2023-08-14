@@ -49,7 +49,7 @@ function LoginPage() {
                         </div>
                     ))
                     }
-                    <p className=' border-lime-800 border-2 flex justify-center my-8 bg-zinc-300 w-36 rounded-lg  mx-28'>
+                    <p className=' border-lime-800 border-2 flex justify-center my-8 bg-zinc-300 w-36 rounded-lg  mx-20'>
                     <button type="submit" className='  text-black font-bold'>
                         Iniciar Sesión
                     </button>
